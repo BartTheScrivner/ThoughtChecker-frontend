@@ -1,10 +1,5 @@
-/* COLOR PALETTE */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap');
 
-/* color: #0C5274 ;
-color: #2D2231 ;
-color: #BC9D7E ; 
-color: #0E3857 ;
-color: #3EA6D2 ; */
 
 .COLOR-PALETTE {
   color: #0C5274;
@@ -12,4 +7,82 @@ color: #3EA6D2 ; */
   color: #BC9D7E; 
   color: #0E3857;
   color: #3EA6D2;
+}
+
+/* MAIN STYLES */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-image: linear-gradient(to top, #00586c 0%, #330867 100%);
+  color: #fff395;
+  font-family: 'Raleway', sans-serif;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+#display {
+  margin: 100px;
+  padding: 30px;
+  width: 100vw;
+  color: #efd28a;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+#banner h1 {
+  font-size: 4em;
+}
+
+/* NAVBAR */
+.navbar {
+  height: 100vh;
+  padding-left: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.navbar a {
+  text-decoration: none;
+  color:  #BC9D7E;
+}
+
+.navbar i {
+  size: 5px;
+}
+
+.navbar i:hover {
+  text-shadow: 2px 2px 20px;
+}
+
+.navbar.hidden {
+  transition: all 500ms ease-in-out;
+  display: none;
+}
+
+/* ENTRY FORM */
+#entry-form input{
+  background: transparent;
+  width: 60%;
+  height: 40px;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom: 5px solid #debd84;
+  outline-style: none;
+  color: #debd84;
+  font-size: 2em;
+  text-align: center;
+}
+
+#entry-form button {
+  background: none;
+  border: none;
+  color: #debd84;
 }
