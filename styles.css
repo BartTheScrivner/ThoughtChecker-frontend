@@ -10,13 +10,18 @@
 }
 
 /* MAIN STYLES */
-body {
+
+* {
   margin: 0;
   padding: 0;
+  font-family: 'Raleway', sans-serif;
+}
+body {
+  
   height: 100vh;
+  overflow: hidden;
   background-image: linear-gradient(to top, #00586c 0%, #330867 100%);
   color: #fff395;
-  font-family: 'Raleway', sans-serif;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
