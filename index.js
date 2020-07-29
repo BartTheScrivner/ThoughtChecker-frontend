@@ -10,6 +10,7 @@ function promptUserInfo() {
   const userForm = document.createElement('form');
   const nameInput = document.createElement('input');
   const subBtn = document.createElement('button')
+  nameInput.name = "name"
   subBtn.type = 'submit'
   subBtn.innerHTML = `<i class="fas fa-arrow-circle-right fa-2x"></i>`
   userForm.appendChild(nameInput)
@@ -18,8 +19,23 @@ function promptUserInfo() {
   banner.appendChild(welcome)
   entryForm.appendChild(userForm)
   entryForm.addEventListener('submit', e => {
-    
+    e.preventDefault();
+    sendLogIn(userForm);
   });
+}
+
+function sendLogIn(userForm) {
+  const postRequest = {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify(userForm.name.value)
+  }
+  fetch('http://localhost:3000/login', postRequest)
+  .then(response => response.json())
+  .then(console.log)
 }
 
 
