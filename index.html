@@ -10,22 +10,41 @@
   <body>
 
     <div class="navbar">
-      <a href="#"><i class="far fa-file-alt fa-2x"></i></a>
+      <a id='new-entry' href="#"><i class="far fa-file-alt fa-2x"></i></a>
       <a href="#">Words</a>
       <a href="#">Mean</a>
       <a href="#"><i class="far fa-question-circle fa-2x"></i></a>
     </div>
 
     <div id="display">
+      <div class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h1>How are you feeling today?</h1>
+            <form id="entry-form" action="post">
+              <input type="range" name="mood" id="mood" min='1' max='5' step="1">
+              <textarea id="narrative" name="narrative" rows="6" cols="60">
+                I'm feeling...
+              </textarea>
+              <input id='done' type="submit" value="Submit Entry">
+            </form>
+        </div>
+    </div>
+      <div class = "hidden" id="dash-header">
+        <span id="date"></span>
+      </div>
 
       <div id="banner"></div>
-      <div id="entry-form"></div>
+      <div id="form-field"></div>
       
-      <div id="insights"></div>
+      <div id="dashboard">
+        <div id="calendar"></div>
+        <div id="friend-menu"></div>
+      </div>
 
     </div>
 
-
+    <script src="moment.min.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
