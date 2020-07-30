@@ -198,20 +198,20 @@ body {
 #dashboard {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: stretch;
 }
 
 /* CALENDAR */
 #calendar {
   width: 60%;
-  margin: 0 auto;
   height: 100%;
   overflow: hidden;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
   align-items: stretch;
+  max-width: 400px;
 }
 
 .header {
@@ -223,8 +223,6 @@ body {
   text-align: center;
   justify-content: space-around;
   align-items: stretch;
-  /* position:relative;
-  z-index: 100; */
 }
 
 .header h1 {
