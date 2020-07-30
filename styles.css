@@ -26,6 +26,10 @@ body {
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: stretch;
+  animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: .5s;
 }
 
 #display {
@@ -37,6 +41,10 @@ body {
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: stretch;
+}
+
+#banner {
+  margin-bottom: 30px;
 }
 
 #banner h1 {
@@ -135,8 +143,21 @@ body {
 .show-modal {
   opacity: 1;
   visibility: visible;
-  transform: scale(1.0);
-  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+  animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: .5s;
+  /* transform: scale(1.1);
+  transition: visibility .5s ease-in-out .5s, opacity 0.55s 0s, transform 0.55s; */
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 .modal-content h1 {
@@ -161,6 +182,7 @@ body {
   color: #debd84;
   border-radius: 5px;
   margin-bottom: 2rem;
+  font-size: 1.2rem;
 }
 
 #done {
@@ -176,18 +198,15 @@ body {
 #dashboard {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: stretch;
 }
 
 /* CALENDAR */
 #calendar {
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  width: 50%;
+  width: 60%;
   margin: 0 auto;
-  height: 90%;
+  height: 100%;
   overflow: hidden;
   display: flex;
   flex-flow: row wrap;
@@ -196,10 +215,14 @@ body {
 }
 
 .header {
+  display: flex;
+  flex-flow: row nowrap;
   height: 50px;
-  width: 420px;
+  width: 100%;
   background: rgba(103, 86, 122, 0.372);
   text-align: center;
+  justify-content: space-around;
+  align-items: stretch;
   /* position:relative;
   z-index: 100; */
 }
@@ -214,36 +237,30 @@ body {
 }
 
 .left, .right {
-  position: absolute;
-  width: 0px;
-  height: 0px;
-  border-style: solid;
-  top: 50%;
-  margin-top: -7.5px;
+  height: 100%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .left {
-  border-width: 7.5px 10px 7.5px 0;
-  border-color: transparent rgba(160, 159, 160, 1) transparent transparent;
-  left: 20px;
+  margin-right: 10%;
 }
 
 .right {
-  border-width: 7.5px 0 7.5px 10px;
-  border-color: transparent transparent transparent rgba(160, 159, 160, 1);
-  right: 20px;
+  margin-left: 10%;
 }
+
 
 .month {
-  /*overflow: hidden;*/
-  opacity: 0;
+  overflow: hidden;
+  width: 100%;
 }
 
-.month.new {
-  -webkit-animation: fadeIn 1s ease-out;
+/* .month.new {
   opacity: 1;
-}
+} */
 
 .month.in.next {
   -webkit-animation: moveFromTopFadeMonth .4s ease-out;
@@ -274,19 +291,20 @@ body {
 }
 
 .week {
- background: #4A4A4A;
+ background: transparent;
+ display: flex;
+ flex-flow: row wrap;
+ justify-content: space-around;
+ align-items: center;
+ width: 100%;
 }
 
 .day {
-  /* display: inline-block; */
-  width: 60px;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
   vertical-align: top;
   cursor: pointer;
-  background: #4A4A4A;
-  /* position: relative;
-  z-index: 100; */
+  background: transparent;
 }
 
 .day.other {
@@ -306,7 +324,7 @@ body {
 }
 
 .day-number {
-  font-size: 24px;
+  font-size: 1.2rem;
   letter-spacing: 1.5px;
 }
 
@@ -338,9 +356,9 @@ body {
 
 .details {
   /* position: relative; */
-  width: 420px;
+  width: 100%;
   height: 75px;
-  background: rgba(164, 164, 164, 1);
+  background: rgba(48, 41, 91, 0.79);
   margin-top: 5px;
   border-radius: 4px;
 }
@@ -357,109 +375,8 @@ body {
   animation: moveToTopFade .5s ease both;
 }
 
-.arrow {
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  margin-left: -2px;
-  width: 0px;
-  height: 0px;
-  border-style: solid;
-  border-width: 0 5px 5px 5px;
-  border-color: transparent transparent rgba(164, 164, 164, 1) transparent;
-  transition: all 0.7s ease;
-}
 
-.events {
-  height: 75px;
-  padding: 7px 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.events.in {
-  -webkit-animation: fadeIn .3s ease both;
-  -moz-animation: fadeIn .3s ease both;
-  animation: fadeIn .3s ease both;
-}
-
-.events.in {
-  -webkit-animation-delay: .3s;
-  -moz-animation-delay: .3s;
-  animation-delay: .3s;
-}
-
-.details.out .events {
-  -webkit-animation: fadeOutShrink .4s ease both;
-  -moz-animation: fadeOutShink .4s ease both;
-  animation: fadeOutShink .4s ease both;
-}
-
-.events.out {
-  -webkit-animation: fadeOut .3s ease both;
-  -moz-animation: fadeOut .3s ease both;
-  animation: fadeOut .3s ease both;
-}
-
-.event {
-  font-size: 16px;
-  line-height: 22px;
-  letter-spacing: .5px;
-  padding: 2px 16px;
-  vertical-align: top;
-}
-
-.event.empty {
-  color: #eee;
-}
-
-.event-category {
-  height: 10px;
-  width: 10px;
-  display: inline-block;
-  margin: 6px 0 0;
-  vertical-align: top;
-}
-
-.event span {
-  display: inline-block;
-  padding: 0 0 0 7px;
-}
-
-.legend {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 30px;
-  background: rgba(60, 60, 60, 1);
-  line-height: 30px;
-
-}
-
-.entry {
-  position: relative;
-  padding: 0 0 0 25px;
-  font-size: 13px;
-  display: inline-block;
-  line-height: 30px;
-  background: transparent;
-}
-
-.entry:after {
-  position: absolute;
-  content: '';
-  height: 5px;
-  width: 5px;
-  top: 12px;
-  left: 14px;
-}
-
-.entry.blue:after { background: rgba(156, 202, 235, 1); }
-.entry.orange:after { background: rgba(247, 167, 0, 1); }
-.entry.green:after { background: rgba(153, 198, 109, 1); }
-.entry.yellow:after { background: rgba(249, 233, 0, 1); }
-
-/* Animations are cool!  */
+/* ANIMATIONS */
 @-webkit-keyframes moveFromTopFade {
   from { opacity: .3; height:0px; margin-top:0px; -webkit-transform: translateY(-100%); }
 }
