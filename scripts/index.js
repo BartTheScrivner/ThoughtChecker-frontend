@@ -45,7 +45,7 @@ function sendLogIn(userForm) {
 }
 
 function renderDashboard(user) {
-  console.log(user)
+  console.log(user);
   const date = document.getElementById('date');
   date.innerText = moment().format('ll');
   banner.innerHTML = ``;
@@ -55,14 +55,15 @@ function renderDashboard(user) {
   welcomeMessage.innerText = `Welcome, ${user.name}.`;
   dailyQuote.innerText = fetchQuote();
   banner.appendChild(welcomeMessage);
-  renderCalendar(user)
-  renderFriendMenu(user)
+  banner.appendChild(dailyQuote);
+  renderCalendar(user);
+  renderFriendMenu(user);
   setUser(user);
   toggleModal();
 }
 
 function setUser(user) {
-  const entryForm = document.getElementById('entry-form')
+  const entryForm = document.getElementById('entry-form');
   entryForm.dataset.userId = user.id;
 }
 
@@ -73,7 +74,7 @@ function renderCalendar(user) {
 
 function renderFriendMenu(user) {
   user.friendships.forEach(friend => {
-    renderFriend(friend)
+    renderFriend(friend);
   })
 }
 
@@ -188,7 +189,7 @@ Calendar.prototype.drawMonth = function () {
 
   if (this.entries) {
     this.entries.forEach(entry => {
-      entry.date = self.current.clone().date(Math.random() * (29 - 1) + 1);
+      entry.date = moment(entry.created_at.substring(0, entry.created_at.length - 1));
     });
   }
 
@@ -294,9 +295,9 @@ Calendar.prototype.drawEntries = function (day, element) {
       }
       return memo;
     }, []);
-
+    const moodArr = ['terrible', 'bad', 'meh', 'good', 'great'];
     todaysEntries.forEach(entry => {
-      const entrySpan = createElement("span");
+      const entrySpan = createElement("span", moodArr[entry.mood-1]);
       element.appendChild(entrySpan);
     });
   }
@@ -356,14 +357,11 @@ Calendar.prototype.openDay = function (el) {
 Calendar.prototype.renderEntries = function (entries, element) {
   //Remove any entries in the current details element
   const currentWrapper = element.querySelector(".entries");
-  const wrapper = createElement(
-    "div",
-    "entries in" + (currentWrapper ? " new" : "")
-  );
-
+  const wrapper = createElement("div", "entries in" + (currentWrapper ? " new" : ""));
+  const moodArr = ['terrible', 'bad', 'meh', 'good', 'great']
   entries.forEach(entry => {
     const div = createElement("div", "entry");
-    const square = createElement("div", "entry-category " + entry.mood);
+    const square = createElement("div", "entry-category " + moodArr[entry.mood]);
     const span = createElement("span", "", entry.narrative);
 
     div.appendChild(square);
@@ -383,19 +381,11 @@ Calendar.prototype.renderEntries = function (entries, element) {
     currentWrapper.className = "entries out";
     currentWrapper.addEventListener("webkitAnimationEnd", function () {
       currentWrapper.parentNode.removeChild(currentWrapper);
-      ele.appendChild(wrapper);
-    });
-    currentWrapper.addEventListener("oanimationend", function () {
-      currentWrapper.parentNode.removeChild(currentWrapper);
-      ele.appendChild(wrapper);
-    });
-    currentWrapper.addEventListener("msAnimationEnd", function () {
-      currentWrapper.parentNode.removeChild(currentWrapper);
-      ele.appendChild(wrapper);
+      element.appendChild(wrapper);
     });
     currentWrapper.addEventListener("animationend", function () {
       currentWrapper.parentNode.removeChild(currentWrapper);
-      ele.appendChild(wrapper);
+      element.appendChild(wrapper);
     });
   } else {
     element.appendChild(wrapper);

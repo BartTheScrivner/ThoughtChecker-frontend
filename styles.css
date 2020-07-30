@@ -329,18 +329,19 @@ body {
 }
 
 
-.day .day-events {
+.day .day-entries {
   list-style: none;
-  margin-top: 3px;
+  margin-top: 2px;
   text-align: center;
-  height: 12px;
+  height: fit-content;
   line-height: 6px;
   overflow: hidden;
+  display: flex;
+  flex-flow: row;
 }
 
-.day .day-events span {
-  vertical-align: top;
-  /* display: inline-block; */
+.day .day-entries span {
+  display: inline-block;
   padding: 0;
   margin: 0;
   width: 5px;
@@ -349,18 +350,19 @@ body {
   margin: 0 1px;
 }
 
-.blue { background: rgba(156, 202, 235, 1); }
-.orange { background: rgba(247, 167, 0, 1); }
-.green { background: rgba(153, 198, 109, 1); }
-.yellow { background: rgba(249, 233, 0, 1); }
+.terrible { background: rgb(233, 77, 77); }
+.bad { background: rgb(247, 136, 0); }
+.meh { background: rgb(244, 234, 104); }
+.good { background: rgb(166, 249, 0); }
+.great { background: rgb(34, 202, 96); }
 
 .details {
   /* position: relative; */
   width: 100%;
-  height: 75px;
+  height: fit-content;
   background: rgba(48, 41, 91, 0.79);
   margin-top: 5px;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .details.in {
@@ -373,6 +375,22 @@ body {
   -webkit-animation: moveToTopFade .5s ease both;
   -moz-animation: moveToTopFade .5s ease both;
   animation: moveToTopFade .5s ease both;
+}
+
+.entries {
+  padding-left: 10px;
+}
+
+.entries.in {
+  -webkit-animation: moveFromTopFade .3s ease both;
+  -moz-animation: moveFromTopFade .3s ease both;
+  animation: moveFromTopFade .3s ease both;
+}
+
+.entries.out {
+  -webkit-animation: moveToTopFade .3s ease both;
+  -moz-animation: moveToTopFade .3s ease both;
+  animation: moveToTopFade .3s ease both;
 }
 
 
