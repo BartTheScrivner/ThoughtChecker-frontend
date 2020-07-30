@@ -187,8 +187,8 @@ Calendar.prototype.drawMonth = function () {
   const self = this;
 
   if (this.entries) {
-    this.entries.forEach(function (ev) {
-      ev.date = self.current.clone().date(Math.random() * (29 - 1) + 1);
+    this.entries.forEach(entry => {
+      entry.date = self.current.clone().date(Math.random() * (29 - 1) + 1);
     });
   }
 
@@ -342,9 +342,9 @@ Calendar.prototype.openDay = function (el) {
     el.parentNode.appendChild(details);
   }
   if (this.entries) {
-    const todaysEntries = this.entries.reduce(function (memo, ev) {
-      if (ev.date.isSame(day, "day")) {
-        memo.push(ev);
+    const todaysEntries = this.entries.reduce(function (memo, entry) {
+      if (entry.date.isSame(day, "day")) {
+        memo.push(entry);
       }
       return memo;
     }, []);
@@ -353,18 +353,18 @@ Calendar.prototype.openDay = function (el) {
   }
 };
 
-Calendar.prototype.renderEntries = function (entries, ele) {
+Calendar.prototype.renderEntries = function (entries, element) {
   //Remove any entries in the current details element
-  const currentWrapper = ele.querySelector(".entries");
+  const currentWrapper = element.querySelector(".entries");
   const wrapper = createElement(
     "div",
     "entries in" + (currentWrapper ? " new" : "")
   );
 
-  entries.forEach(function (ev) {
+  entries.forEach(entry => {
     const div = createElement("div", "entry");
-    const square = createElement("div", "entry-category " + ev.color);
-    const span = createElement("span", "", ev.eventName);
+    const square = createElement("div", "entry-category " + entry.mood);
+    const span = createElement("span", "", entry.narrative);
 
     div.appendChild(square);
     div.appendChild(span);
@@ -398,7 +398,7 @@ Calendar.prototype.renderEntries = function (entries, ele) {
       ele.appendChild(wrapper);
     });
   } else {
-    ele.appendChild(wrapper);
+    element.appendChild(wrapper);
   }
 };
 
