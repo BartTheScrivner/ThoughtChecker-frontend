@@ -12,6 +12,9 @@ const closeButton = document.querySelector(".close-button");
 const editBtn = document.getElementById("patch");
 const submitBtn = document.getElementById("done");
 
+//////////////
+// ON LOAD //
+////////////
 document.addEventListener("DOMContentLoaded", () => {
   promptUserInfo();
 });
@@ -276,10 +279,13 @@ function updateEntry(entry) {
   const entryDisplay = document.querySelector(`[data-id~="${entry.id}"]`);
   entryDisplay.innerText = entry.narrative;
 }
+//////////////////////////
+/////// CALENDAR ////////
+///////////////////////
 
-// CALENDAR
+
 let today = moment();
-console.log(today);
+
 // Constructor
 function Calendar(selector, entries) {
   this.el = document.querySelector(selector);
