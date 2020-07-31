@@ -276,6 +276,7 @@ function handleEntry(entry) {
   if (entry.mood < 4) {
     randAffirm()
   }
+  // const calendar = new Calendar("#calendar", userData.entries + entry);
 }
 
 function editEntry(entry, span) {
