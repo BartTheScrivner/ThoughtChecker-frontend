@@ -56,6 +56,19 @@ body {
   margin-bottom: 1rem;
 }
 
+#affirmations {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#affirm-display {
+  margin: 3rem;
+  font-size: 2rem;
+  transition: all .5s ease-in-out;
+}
+
 /* NAVBAR */
 .navbar {
   height: 100vh;
@@ -174,6 +187,10 @@ body {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+}
+
+#mood-display {
+  font-size: 5rem;
 }
 
 #mood {

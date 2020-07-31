@@ -1,17 +1,22 @@
 // Navbar
 const newEntryBtn = document.getElementById("new-entry");
+const randAffirmBtn = document.getElementById("random-affirmation");
 // Display
 const banner = document.getElementById("banner");
 const formField = document.getElementById("form-field");
 const dashboard = document.getElementById("dashboard");
 const calendar = document.getElementById("calendar");
 const friendMenu = document.getElementById("friend-menu");
+const affirmations = document.getElementById("affirmations")
+const affirmDisplay = document.getElementById("affirm-display")
 // Entry Forms
 const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close-button");
 const editBtn = document.getElementById("patch");
 const submitBtn = document.getElementById("done");
 const deleteBtn = document.getElementById("delete");
+const moodSlider = document.getElementById("mood");
+const moodDisplay = document.getElementById("mood-display")
 
 //////////////
 // ON LOAD //
@@ -74,9 +79,11 @@ function renderDashboard(user) {
   toggleModal();
 }
 
+let userData;
 function setUser(user) {
   const entryForm = document.getElementById("entry-form");
   entryForm.dataset.userId = user.id;
+  userData = user;
 }
 
 /////////////////////////////////////////////
@@ -175,7 +182,7 @@ function postAffirmation(user, friend, miniForm) {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    body: JSON.stringify(affirmObj),
+    body: JSON.stringify(affirmObj)
   };
 
   fetch("http://localhost:3000/affirmations", postRequest)
@@ -185,6 +192,15 @@ function postAffirmation(user, friend, miniForm) {
 
 function fetchQuote() {
   return "Don't judge each day by the harvest you reap but by the seeds that you plant. -Robert Louis Stevenson";
+}
+
+randAffirmBtn.addEventListener("click", () => {
+  randAffirm()
+});
+
+function randAffirm() {
+  const affirmList = userData.received_affirmations;
+  affirmDisplay.innerText = affirmList[Math.floor(Math.random() * affirmList.length)].message;
 }
 
 /////////////////////////////////////////////
@@ -201,6 +217,11 @@ function toggleEdit() {
   submitBtn.classList.toggle("hidden");
 
 }
+
+moodSlider.addEventListener("input", (e) => {
+  const emojiArr = [`&#128542;`, `&#128577;`, `&#128528;`, `&#128578;`, `&#128515;`];
+  moodDisplay.innerHTML = emojiArr[e.target.value - 1];
+});
 
 editBtn.addEventListener("click", () => {
   patchEntry(entryForm);
@@ -246,9 +267,15 @@ function postEntry(entryForm) {
 
   fetch("http://localhost:3000/entries", postRequest)
     .then((response) => response.json())
-    .then(console.log);
+    .then(entry => handleEntry(entry));
 
   toggleModal();
+}
+
+function handleEntry(entry) {
+  if (entry.mood < 4) {
+    randAffirm()
+  }
 }
 
 function editEntry(entry, span) {
