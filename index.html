@@ -11,8 +11,7 @@
 
     <div class="navbar">
       <a id='new-entry' href="#"><i class="far fa-file-alt fa-2x"></i></a>
-      <a href="#">Words</a>
-      <a href="#">Mean</a>
+      <a id='random-affirmation' href="#"><i class="fas fa-random fa-2x"></i></a>
       <a href="#"><i class="far fa-question-circle fa-2x"></i></a>
     </div>
 
@@ -23,10 +22,11 @@
             <h1>How are you feeling today?</h1>
             <form id="entry-form" action="post">
               <input type="range" name="mood" id="mood" min='1' max='5' step="1">
-              <textarea id="narrative" name="narrative" rows="6" cols="40">
+              <textarea id="narrative" name="narrative" rows="10" cols="50">
                 I'm feeling...
               </textarea>
               <input id='done' type="submit" value="Submit Entry">
+              <input id='patch' class='hidden' type="button" value="Submit Changes">
             </form>
         </div>
     </div>

@@ -119,8 +119,8 @@ body {
   transform: translate(-50%, -50%);
   background-image: linear-gradient(to top, #00586c 0%, #330867 100%);
   padding: 1rem 1.5rem;
-  width: 30rem;
-  height: 30rem;
+  width: 50rem;
+  height: 35rem;
   border-radius: 0.5rem;
   display: flex;
   flex-flow: column nowrap;
@@ -146,7 +146,7 @@ body {
   animation-name: fadeInOpacity;
 	animation-iteration-count: 1;
 	animation-timing-function: ease-in;
-	animation-duration: .5s;
+	animation-duration: .6s;
   /* transform: scale(1.1);
   transition: visibility .5s ease-in-out .5s, opacity 0.55s 0s, transform 0.55s; */
 }
@@ -183,15 +183,30 @@ body {
   border-radius: 5px;
   margin-bottom: 2rem;
   font-size: 1.2rem;
+
 }
 
 #done {
-  width: 60%;
+  width: 50%;
   height: 2rem;
   background-color: #2008676b;
   color: #efd28a;
   border: 1px solid #0E3857;
   border-radius: 5px;
+}
+
+#patch {
+  width: 50%;
+  height: 2rem;
+  background-color: #2008676b;
+  color: #efd28a;
+  border: 1px solid #0E3857;
+  border-radius: 5px;
+}
+
+#done.hidden, #patch.hidden {
+  display: none;
+  
 }
 
 /* DASHBOARD */
@@ -391,6 +406,51 @@ body {
   animation: moveToTopFade .3s ease both;
 }
 
+/* FRIENDS MENU */
+#friend-menu {
+  width: 40%;
+  max-width: 300px;
+  display: flex;
+  flex-flow: column nowrap;
+  overflow-y: auto;
+  overflow-x: hidden;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.friend-card {
+  width: 95%;
+  height: 1.5rem;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: stretch;
+  border-bottom: 1px solid #bc9d7e85;
+  padding: 10px;
+}
+
+.friend-card button {
+  background: transparent;
+  padding: 5px;
+  border-radius: 10px;
+  color: #efd28a;
+  border: 1px solid #efd28a ;
+}
+
+.name {
+  align-self: center;
+  justify-self: flex-start;
+}
+
+.affirm-btn {
+  align-self: center;
+  justify-self: center;
+}
+
+.delete-btn {
+  align-self: center;
+  justify-self: flex-end;
+}
 
 /* ANIMATIONS */
 @-webkit-keyframes moveFromTopFade {

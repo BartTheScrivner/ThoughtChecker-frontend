@@ -1,30 +1,38 @@
-
-
-const banner = document.getElementById('banner');
-const formField = document.getElementById('form-field');
-const dashboard = document.getElementById('dashboard');
-const calendar = document.getElementById('calendar')
-const friendMenu = document.getElementById('friend-menu')
+// Navbar
+const newEntryBtn = document.getElementById("new-entry");
+// Display
+const banner = document.getElementById("banner");
+const formField = document.getElementById("form-field");
+const dashboard = document.getElementById("dashboard");
+const calendar = document.getElementById("calendar");
+const friendMenu = document.getElementById("friend-menu");
+// Entry Forms
+const modal = document.querySelector(".modal");
+const closeButton = document.querySelector(".close-button");
+const editBtn = document.getElementById("patch");
+const submitBtn = document.getElementById("done");
 
 document.addEventListener("DOMContentLoaded", () => {
-  promptUserInfo()
+  promptUserInfo();
 });
 
-// LOGIN
+/////////////////////////////////////////////
+/////////////// LOGIN & LANDING ///////////////
+/////////////////////////////////////////////
 function promptUserInfo() {
-  const welcome = document.createElement('h1');
-  const userForm = document.createElement('form');
-  const nameInput = document.createElement('input');
-  const subBtn = document.createElement('button')
-  nameInput.name = "name"
-  subBtn.type = 'submit'
-  subBtn.innerHTML = `<i class="fas fa-arrow-circle-right fa-2x"></i>`
-  userForm.appendChild(nameInput)
-  userForm.appendChild(subBtn)
-  welcome.innerText = "Hello, what's your name?"
-  banner.appendChild(welcome)
-  formField.appendChild(userForm)
-  formField.addEventListener('submit', e => {
+  const welcome = document.createElement("h1");
+  const userForm = document.createElement("form");
+  const nameInput = document.createElement("input");
+  const subBtn = document.createElement("button");
+  nameInput.name = "name";
+  subBtn.type = "submit";
+  subBtn.innerHTML = `<i class="fas fa-arrow-circle-right fa-2x"></i>`;
+  userForm.appendChild(nameInput);
+  userForm.appendChild(subBtn);
+  welcome.innerText = "Hello, what's your name?";
+  banner.appendChild(welcome);
+  formField.appendChild(userForm);
+  formField.addEventListener("submit", (e) => {
     e.preventDefault();
     sendLogIn(userForm);
   });
@@ -32,26 +40,26 @@ function promptUserInfo() {
 
 function sendLogIn(userForm) {
   const postRequest = {
-    method: 'POST',
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json"
+      Accept: "application/json",
     },
-    body: JSON.stringify(userForm.name.value)
-  }
-  fetch('http://localhost:3000/login', postRequest)
-  .then(response => response.json())
-  .then(user => renderDashboard(user))
+    body: JSON.stringify(userForm.name.value),
+  };
+  fetch("http://localhost:3000/login", postRequest)
+    .then((response) => response.json())
+    .then((user) => renderDashboard(user));
 }
 
 function renderDashboard(user) {
   console.log(user);
-  const date = document.getElementById('date');
-  date.innerText = moment().format('ll');
+  const date = document.getElementById("date");
+  date.innerText = moment().format("ll");
   banner.innerHTML = ``;
   formField.innerHTML = ``;
   const welcomeMessage = document.createElement("h2");
-  const dailyQuote = document.createElement('h3');
+  const dailyQuote = document.createElement("h3");
   welcomeMessage.innerText = `Welcome, ${user.name}.`;
   dailyQuote.innerText = fetchQuote();
   banner.appendChild(welcomeMessage);
@@ -63,51 +71,150 @@ function renderDashboard(user) {
 }
 
 function setUser(user) {
-  const entryForm = document.getElementById('entry-form');
+  const entryForm = document.getElementById("entry-form");
   entryForm.dataset.userId = user.id;
 }
 
-// DASHBOARD
+/////////////////////////////////////////////
+/////////////// DASHBOARD ///////////////
+/////////////////////////////////////////////
 function renderCalendar(user) {
-  const calendar = new Calendar('#calendar', user.entries);
+  const calendar = new Calendar("#calendar", user.entries);
 }
 
 function renderFriendMenu(user) {
-  user.friendships.forEach(friend => {
-    renderFriend(friend);
-  })
+  user.friends.forEach((friend) => {
+    renderFriend(user, friend);
+  });
 }
 
-function renderFriend(friend) {
-  const friendCard = document.createElement('li');
-  friendCard.innerText = friend.name;
+function renderFriend(user, friend) {
+  const friendCard = createElement("div", "friend-card");
+  const name = createElement("h4", "card-name", friend.name);
+  const affirmBtn = createElement("button", "affirm-btn");
+  affirmBtn.innerHTML = `<i class="fas fa-fist-raised"></i>`;
+  const deleteBtn = createElement("button", "delete-btn");
+  deleteBtn.innerHTML = `<i class="fas fa-user-slash"></i>`;
+  friendCard.appendChild(name);
+  friendCard.appendChild(affirmBtn);
+  friendCard.appendChild(deleteBtn);
+
   friendMenu.appendChild(friendCard);
+
+  affirmBtn.addEventListener("click", () => {
+    renderAffirm(user, friend, friendCard);
+  });
+  deleteBtn.addEventListener("click", () => {
+    deleteFriendship(user, friend);
+  });
+}
+
+function deleteFriendship(user, friend) {
+  let friendshipToDelete;
+  user.friendships.forEach((friendship) => {
+    if (
+      friendship.friender_id == friend.id ||
+      friendship.friendee_id == friend.id
+    ) {
+      friendshipToDelete = friendship.id;
+    }
+  });
+
+  const deleteRequest = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  };
+
+  fetch(
+    `http://localhost:3000/friendships/${friendshipToDelete}`,
+    deleteRequest
+  )
+    .then((response) => response.json())
+    .then(console.log);
+}
+
+/////////////////////////////////////////////
+/////////////// AFFIRMATIONS ///////////////
+/////////////////////////////////////////////
+
+function renderAffirm(user, friend, friendCard) {
+  const miniFormDiv = createElement("div", "mini-form-div");
+  const miniForm = createElement("form", "mini-form");
+  const textField = createElement("input", "message", `Dear ${friend.name}, `);
+  textField.name = "message";
+  const subBtn = createElement("input");
+  subBtn.type = "submit";
+  miniForm.appendChild(textField);
+  miniForm.appendChild(subBtn);
+  miniFormDiv.appendChild(miniForm);
+  insertAfter(miniFormDiv, friendCard);
+  miniForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    postAffirmation(user, friend, miniForm);
+    miniFormDiv.remove();
+  });
+}
+
+function postAffirmation(user, friend, miniForm) {
+  const affirmObj = {
+    sender_id: user.id,
+    recipient_id: friend.id,
+    message: miniForm.message.value,
+  };
+
+  const postRequest = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(affirmObj),
+  };
+
+  fetch("http://localhost:3000/affirmations", postRequest)
+    .then((response) => response.json())
+    .then(console.log);
 }
 
 function fetchQuote() {
-  return "Don't judge each day by the harvest you reap but by the seeds that you plant. -Robert Louis Stevenson"
+  return "Don't judge each day by the harvest you reap but by the seeds that you plant. -Robert Louis Stevenson";
 }
 
-// MODAL ENTRY FORM
-const modal = document.querySelector(".modal");
-const closeButton = document.querySelector(".close-button");
-const newEntry = document.getElementById('new-entry')
+/////////////////////////////////////////////
+///////////// MODAL ENTRY FORM ///////////////
+/////////////////////////////////////////////
 
 function toggleModal() {
-    modal.classList.toggle("show-modal");
+  modal.classList.toggle("show-modal");
 }
 
-closeButton.addEventListener("click", () =>{
-  toggleModal()
+function toggleEdit() {
+  editBtn.classList.toggle("hidden");
+  submitBtn.classList.toggle("hidden");
+}
+
+editBtn.addEventListener("click", () => {
+  patchEntry(entryForm);
 });
 
-newEntry.addEventListener("click", () =>{
-  toggleModal()
+closeButton.addEventListener("click", () => {
+  toggleModal();
+  if (!editBtn.classList.contains("hidden")) {
+    toggleEdit();
+  }
 });
 
-const entryForm = document.getElementById('entry-form')
-entryForm.addEventListener('submit', (e) => {
-  e.preventDefault()
+const entryForm = document.getElementById("entry-form");
+newEntryBtn.addEventListener("click", () => {
+  toggleModal();
+  entryForm.narrative.value = "I'm feeling...";
+});
+
+entryForm.addEventListener("submit", (e) => {
+  e.preventDefault();
   postEntry(entryForm);
 });
 
@@ -115,23 +222,59 @@ function postEntry(entryForm) {
   const formFields = {
     user_id: entryForm.dataset.userId,
     mood: entryForm.mood.value,
-    narrative: entryForm.narrative.value.trim()
-  }
+    narrative: entryForm.narrative.value.trim(),
+  };
 
   const postRequest = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json"
+      Accept: "application/json",
     },
-    body: JSON.stringify(formFields)
-  }
+    body: JSON.stringify(formFields),
+  };
 
-  fetch('http://localhost:3000/entries', postRequest)
-  .then(response => response.json())
-  .then(console.log);
+  fetch("http://localhost:3000/entries", postRequest)
+    .then((response) => response.json())
+    .then(console.log);
 
   toggleModal();
+}
+
+function editEntry(entry, span) {
+  entryForm.dataset.entryId = entry.id;
+  entryForm.mood.value = entry.mood;
+  entryForm.narrative.innerHTML = entry.narrative;
+  toggleModal();
+  toggleEdit();
+}
+
+function patchEntry(entryForm) {
+  const entryObj = {
+    mood: entryForm.mood.value,
+    narrative: entryForm.narrative.value.trim(),
+  };
+  const patchRequest = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accepts: "application/json",
+    },
+    body: JSON.stringify(entryObj),
+  };
+  fetch(
+    `http://localhost:3000/entries/${entryForm.dataset.entryId}`,
+    patchRequest
+  )
+    .then((response) => response.json())
+    .then((entry) => updateEntry(entry));
+  toggleEdit();
+  toggleModal();
+}
+
+function updateEntry(entry) {
+  const entryDisplay = document.querySelector(`[data-id~="${entry.id}"]`);
+  entryDisplay.innerText = entry.narrative;
 }
 
 // CALENDAR
@@ -188,8 +331,10 @@ Calendar.prototype.drawMonth = function () {
   const self = this;
 
   if (this.entries) {
-    this.entries.forEach(entry => {
-      entry.date = moment(entry.created_at.substring(0, entry.created_at.length - 1));
+    this.entries.forEach((entry) => {
+      entry.date = moment(
+        entry.created_at.substring(0, entry.created_at.length - 1)
+      );
     });
   }
 
@@ -295,9 +440,9 @@ Calendar.prototype.drawEntries = function (day, element) {
       }
       return memo;
     }, []);
-    const moodArr = ['terrible', 'bad', 'meh', 'good', 'great'];
-    todaysEntries.forEach(entry => {
-      const entrySpan = createElement("span", moodArr[entry.mood-1]);
+    const moodArr = ["terrible", "bad", "meh", "good", "great"];
+    todaysEntries.forEach((entry) => {
+      const entrySpan = createElement("span", moodArr[entry.mood - 1]);
       element.appendChild(entrySpan);
     });
   }
@@ -357,12 +502,22 @@ Calendar.prototype.openDay = function (el) {
 Calendar.prototype.renderEntries = function (entries, element) {
   //Remove any entries in the current details element
   const currentWrapper = element.querySelector(".entries");
-  const wrapper = createElement("div", "entries in" + (currentWrapper ? " new" : ""));
-  const moodArr = ['terrible', 'bad', 'meh', 'good', 'great']
-  entries.forEach(entry => {
+  const wrapper = createElement(
+    "div",
+    "entries in" + (currentWrapper ? " new" : "")
+  );
+  const moodArr = ["terrible", "bad", "meh", "good", "great"];
+  entries.forEach((entry) => {
     const div = createElement("div", "entry");
-    const square = createElement("div", "entry-category " + moodArr[entry.mood]);
+    const square = createElement(
+      "div",
+      "entry-category " + moodArr[entry.mood]
+    );
     const span = createElement("span", "", entry.narrative);
+    span.dataset.id = entry.id;
+    span.addEventListener("click", () => {
+      editEntry(entry);
+    });
 
     div.appendChild(square);
     div.appendChild(span);
@@ -415,6 +570,6 @@ function createElement(tagName, className, innerText) {
   return ele;
 }
 
-
-
-
+function insertAfter(newNode, referenceNode) {
+  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
