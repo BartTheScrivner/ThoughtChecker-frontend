@@ -49,6 +49,11 @@ body {
 
 #banner h1 {
   font-size: 4em;
+  margin-bottom: 2rem;
+}
+
+#banner h2 {
+  margin-bottom: 1rem;
 }
 
 /* NAVBAR */
@@ -186,7 +191,7 @@ body {
 
 }
 
-#done {
+#done, #patch {
   width: 50%;
   height: 2rem;
   background-color: #2008676b;
@@ -195,16 +200,16 @@ body {
   border-radius: 5px;
 }
 
-#patch {
+#delete {
   width: 50%;
   height: 2rem;
-  background-color: #2008676b;
+  background-color: #e34f4fd2;
   color: #efd28a;
   border: 1px solid #0E3857;
   border-radius: 5px;
 }
 
-#done.hidden, #patch.hidden {
+#done.hidden, #patch.hidden, #delete.hidden {
   display: none;
   
 }

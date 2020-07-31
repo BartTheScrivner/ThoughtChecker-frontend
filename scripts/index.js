@@ -11,6 +11,7 @@ const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close-button");
 const editBtn = document.getElementById("patch");
 const submitBtn = document.getElementById("done");
+const deleteBtn = document.getElementById("delete");
 
 //////////////
 // ON LOAD //
@@ -196,12 +197,18 @@ function toggleModal() {
 
 function toggleEdit() {
   editBtn.classList.toggle("hidden");
+  deleteBtn.classList.toggle("hidden");
   submitBtn.classList.toggle("hidden");
+
 }
 
 editBtn.addEventListener("click", () => {
   patchEntry(entryForm);
 });
+
+deleteBtn.addEventListener("click", () => {
+  deleteEntry(entryForm);
+})
 
 closeButton.addEventListener("click", () => {
   toggleModal();
@@ -279,6 +286,29 @@ function updateEntry(entry) {
   const entryDisplay = document.querySelector(`[data-id~="${entry.id}"]`);
   entryDisplay.innerText = entry.narrative;
 }
+
+function deleteEntry(entryForm) {
+  const deleteRequest = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Accepts: "application/json",
+    }
+  };
+  fetch(
+    `http://localhost:3000/entries/${entryForm.dataset.entryId}`,
+    deleteRequest
+  )
+    .then(response => response.json())
+    .then(entry => removeEntry(entry));
+  toggleEdit();
+  toggleModal();
+}
+function removeEntry(entry) {
+  const entryDisplay = document.querySelector(`[data-id~="${entry.id}"]`);
+  entryDisplay.remove()
+}
+
 //////////////////////////
 /////// CALENDAR ////////
 ///////////////////////
