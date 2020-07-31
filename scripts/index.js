@@ -156,8 +156,10 @@ function renderAffirm(user, friend, friendCard) {
   const miniForm = createElement("form", "mini-form");
   const textField = createElement("input", "message", `Dear ${friend.name}, `);
   textField.name = "message";
+  textField.id = "affirm-text"
   const subBtn = createElement("input");
   subBtn.type = "submit";
+  subBtn.id = 'affirm-btn'
   miniForm.appendChild(textField);
   miniForm.appendChild(subBtn);
   miniFormDiv.appendChild(miniForm);
@@ -195,6 +197,10 @@ function fetchQuote() {
 }
 
 randAffirmBtn.addEventListener("click", () => {
+  if(affirmations.querySelector("p")) {
+    prompt = affirmations.querySelector("p")
+    prompt.remove()
+  }
   randAffirm()
 });
 
@@ -273,10 +279,14 @@ function postEntry(entryForm) {
 }
 
 function handleEntry(entry) {
-  if (entry.mood < 4) {
+  if (entry.mood < 3) {
+    const affirmPrompt = createElement("p", "", "We're sorry you're feeling down. Here's a reminder you have friends that care:")
+    affirmations.insertBefore(affirmPrompt, affirmDisplay)
     randAffirm()
   }
-  // const calendar = new Calendar("#calendar", userData.entries + entry);
+  calendar.innerHTML = ``;
+  userData.entries.push(entry)
+  const newCalendar = new Calendar("#calendar", userData.entries);
 }
 
 function editEntry(entry, span) {
