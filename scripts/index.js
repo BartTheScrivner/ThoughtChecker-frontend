@@ -101,6 +101,7 @@ function renderFriendMenu(user) {
 
 function renderFriend(user, friend) {
   const friendCard = createElement("div", "friend-card");
+  friendCard.dataset.id = friend.id
   const name = createElement("h4", "card-name", friend.name);
   const affirmBtn = createElement("button", "affirm-btn");
   affirmBtn.innerHTML = `<i class="fas fa-fist-raised"></i>`;
@@ -144,7 +145,19 @@ function deleteFriendship(user, friend) {
     deleteRequest
   )
     .then((response) => response.json())
-    .then(console.log);
+    .then((message) => handleFriendDelete(user, message, friend, friendshipToDelete));
+}
+
+function handleFriendDelete(user, message, friend, friendshipToDelete) {
+  if (message.message === "Successful") {
+  let friendIndex = user.friends.indexOf(f => f.id === friend.id )
+  let friendshipIndex = user.friendships.indexOf(f => f.id === friendshipToDelete )
+  user.friends = [...user.friends.slice(0, friendIndex)]
+  console.log('user.friends: ', user.friends);
+  user.friendships = [user.friendships.slice(0, friendshipIndex), user.friendships.slice(friendshipIndex + 1)]
+  let friendCardToDelete = friendMenu.querySelector(`[data-id~="${friend.id}"]`)
+  friendCardToDelete.remove()
+  }
 }
 
 /////////////////////////////////////////////
